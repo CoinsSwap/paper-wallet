@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Paper Wallet</title>
+    <style>
+      body, html {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        margin: 0;
+        user-select: none;
+      }
+      h1, h2, h3, h4 {
+        margin: 0;
+      }
+      label {
+        margin: 0;
+        padding: 6px 12px;
+        font-size: 24px;
+        text-transform: capitalize;
+      }
+      main {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #1c2c3b;
+      }
+      section {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        opacity: 0;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .selected {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      section[data-route="qr"] {
+        display: flex;
+        flex-flow: column;
+      }
+      .qr-wrapper, .wallet {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        width: 964px;
+        align-items: center;
+      }
+      .wallet {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        width: 964px;
+        min-height: 644px;
+        height: 644px;
+        align-items: center;
+      }
+      .qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 320px;
+        width: 320px;
+        /* background: #FFF; */
+        color: #FFF;
+        border-radius: 2px;
+      }
+      button {
+        padding: 6px 12px;
+        box-sizing: border-box;
+      }
+      .appname {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 16px;
+        transform: translateX(-50%);
+        color: #eee;
+        font-size: 44px;
+      }
+      .subtitle {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 60px;
+        transform: translateX(-50%);
+        color: #eee;
+        font-size: 22px;
+      }
+      .flex {
+        flex: 1;
+      }
+      .flex2 {
+        flex: 2;
+      }
+      .info {
+        width: 100%;
+      }
+      strong, .info, h4 {
+        padding: 8px 12px;
+        box-sizing: border-box;
+      }
+      .public, .private {
+        overflow: hidden;
+        overflow-wrap: break-word;
+        text-align: center;
+        width: 240px;
+        align-items: baseline;
+        box-sizing: border-box;
+        padding: 4px;
+        margin: 0;
+        user-select: text;
+      }
+      .private-qr, .public-qr {
+        padding: 12px 16px;
+        box-sizing: border-box;
+      }
+      .horizontal-line {
+        width: 964px;
+        height: 1px;
+        border-bottom: #fff 1px dashed;
+      }
+      .vertical-line {
+        height: 320px;
+        width: 1px;
+        border-left: #fff 1px dashed;
+      }
+      .download {
+        position: relative;
+        bottom: 48px;
+      }
+      .hidden {
+        opacity: 0;
+      }
+      .generating {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: #1c2c3b;
+        pointer-events: none;
+      }
+      .wallet .particles-js-canvas-el {
+        position: absolute;
+      }
+      @media (min-width: 964px) {
+        .wallet {
+          position: relative;
+          opacity: 1;
+        }
+        .generating {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="main">
+      <section data-route="home">
+        <span class="appname">CRYPTOCOIN</span>
+        <span class="subtitle">Paper wallet generator</span>
+        <span class="flex"></span>
+        <button onclick="create()">create paper wallet</button>
+        <span class="flex"></span>
+      </section>
+      <section data-route="qr" style="overflow: auto;">
+        <span class="flex"></span>
+        <span class="wallet hidden" id="wallet">
+          <span class="qr-wrapper">
+            <span class="qr-container private-container">
+              <span class="flex"></span>
+              <label for="private">private key</label>
+              <img id="private" alt="private" class="private-qr">
+              <p class="private"></p>
+              <span class="flex"></span>
+            </span>
+
+            <span class="flex"></span>
+            <span class="vertical-line"></span>
+            <span class="flex"></span>
+
+            <span class="qr-container"></span>
+
+            <span class="flex"></span>
+            <span class="vertical-line"></span>
+            <span class="flex"></span>
+
+            <span class="qr-container"></span>
+          </span>
+
+          <span class="horizontal-line"></span>
+
+          <span class="qr-wrapper">
+            <span class="qr-container">
+              <span class="flex"></span>
+              <label for="public">address</label>
+              <img id="public" alt="public" class="public-qr">
+              <p class="public"></p>
+              <span class="flex"></span>
+            </span>
+
+            <span class="flex"></span>
+            <span class="vertical-line"></span>
+            <span class="flex"></span>
+
+            <span class="qr-container">
+              <strong style="padding-top: 46px;">DO NOT REVEAL THE PRIVATE KEY!</strong>
+              <br>
+
+              <span class="flex"></span>
+              <strong class="info">Amount</strong>
+              <strong class="info">Note</strong>
+
+              <span class="flex2"></span>
+            </span>
+
+            <span class="flex"></span>
+            <span class="vertical-line"></span>
+            <span class="flex"></span>
+
+            <span class="qr-container">
+              <h4 style="padding-top: 46px;">CRYPTOCOIN</h4>
+              <img src="lib/wallet_icon.png" alt="">
+              <span class="flex"></span>
+            </span>
+          </span>
+        </span>
+        <span class="flex"></span>
+        <button name="download wallet" class="download">DOWNLOAD</button>
+      </section>
+    </main>
+    <span class="generating hidden"></span>
+
+
+    <script defer>
+      const particlesConfig = {
+        "particles": {
+          "number": {
+            "value": 80,
+            "density": {
+              "enable": true,
+              "value_area": 800
+            }
+          },
+          "color": {
+            "value": "#ffffff"
+          },
+          "shape": {
+            "type": "circle",
+            "stroke": {
+              "width": 0,
+              "color": "#9ba297"
+            },
+            "polygon": {
+              "nb_sides": 7
+            },
+            "image": {
+              "src": "img/github.svg",
+              "width": 100,
+              "height": 100
+            }
+          },
+          "opacity": {
+            "value": 0.7616207289111233,
+            "random": false,
+            "anim": {
+              "enable": false,
+              "speed": 1,
+              "opacity_min": 0.1,
+              "sync": false
+            }
+          },
+          "size": {
+            "value": 3,
+            "random": true,
+            "anim": {
+              "enable": false,
+              "speed": 40,
+              "size_min": 0.1,
+              "sync": false
+            }
+          },
+          "line_linked": {
+            "enable": true,
+            "distance": 120,
+            "color": "#ffffff",
+            "opacity": 0.456972437346674,
+            "width": 0.6413648243462091
+          },
+          "move": {
+            "enable": true,
+            "speed": 7,
+            "direction": "none",
+            "random": true,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false,
+            "attract": {
+              "enable": true,
+              "rotateX": 600,
+              "rotateY": 1200
+            }
+          }
+        },
+        "interactivity": {
+          "detect_on": "canvas",
+          "events": {
+            "onhover": {
+              "enable": false,
+              "mode": "bubble"
+            },
+            "onclick": {
+              "enable": true,
+              "mode": "push"
+            },
+            "resize": true
+          },
+          "modes": {
+            "grab": {
+              "distance": 400,
+              "line_linked": {
+                "opacity": 1
+              }
+            },
+            "bubble": {
+              "distance": 231.44200550588337,
+              "size": 4,
+              "duration": 1.3805312609122866,
+              "opacity": 8,
+              "speed": 3
+            },
+            "repulse": {
+              "distance": 200,
+              "duration": 0.4
+            },
+            "push": {
+              "particles_nb": 4
+            },
+            "remove": {
+              "particles_nb": 2
+            }
+          }
+        },
+        "retina_detect": true
+      };
+
+      const loadParticles = target => new Promise((resolve, reject) => {
+        try {
+          particlesJS(target, particlesConfig);
+          resolve();
+        } catch (error) {
+          reject(error)
+        }
+      });
+
+      window.loadParticles = loadParticles;
+
+      requestAnimationFrame(() => {
+        (async () => {
+          const importScript = src => new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.onload = () => resolve();
+            script.onerror = error => reject(error);
+            script.setAttribute('async', '')
+            script.src = src;
+            document.head.appendChild(script)
+          });
+          await importScript('/node_modules/particles.js/particles.js');
+          await loadParticles('main');
+          await importScript('lib/wallet.js');
+          await importScript('/node_modules/qrcode/build/qrcode.js');
+        })();
+      });
+    </script>
+  </body>
+</html>
