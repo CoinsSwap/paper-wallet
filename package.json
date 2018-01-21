@@ -1,6 +1,6 @@
 {
   "name": "crypto-paper-wallet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Paper wallet for cryptocoin",
   "main": "index.js",
   "author": "Glenn Vandeuren <vandeurenglenn@gmail.com>",
