@@ -374,10 +374,10 @@
             script.src = src;
             document.head.appendChild(script)
           });
-          await importScript('/node_modules/particles.js/particles.js');
+          await importScript('node_modules/particles.js/particles.js');
           await loadParticles('main');
           await importScript('lib/wallet.js');
-          await importScript('/node_modules/qrcode/build/qrcode.js');
+          await importScript('node_modules/qrcode/build/qrcode.js');
         })();
       });
     </script>

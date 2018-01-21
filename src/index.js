@@ -13,7 +13,9 @@ const selectSection = () => {
     }
   });
 }
+
 window.addEventListener('hashchange', change => selectSection());
+
 if (!location.hash || location.length === 1 || location.hash === '#qr') {
   location.hash = 'home';
 } else {
