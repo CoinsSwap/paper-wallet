@@ -75,7 +75,13 @@
       }
       button {
         padding: 6px 12px;
+        min-height: 42px;
+        height: 42px;
         box-sizing: border-box;
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: 500;
+        border-radius: 2px;
       }
       .appname {
         display: block;
@@ -134,8 +140,10 @@
         border-left: #fff 1px dashed;
       }
       .download {
-        position: relative;
-        bottom: 48px;
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
       .hidden {
         opacity: 0;
@@ -160,6 +168,9 @@
         .generating {
           opacity: 0;
         }
+        .download {
+          bottom: 48px;
+        }
       }
     </style>
   </head>
@@ -172,7 +183,7 @@
         <button onclick="create()">create paper wallet</button>
         <span class="flex"></span>
       </section>
-      <section data-route="qr" style="overflow: auto;">
+      <section data-route="qr">
         <span class="flex"></span>
         <span class="wallet hidden" id="wallet">
           <span class="qr-wrapper">
