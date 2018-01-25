@@ -1,10 +1,13 @@
 {
   "name": "crypto-paper-wallet",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Paper wallet for cryptocoin",
   "main": "index.js",
   "author": "Glenn Vandeuren <vandeurenglenn@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "live-server"
+  },
   "backed": {
     "bundles": [
       {
