@@ -1,6 +1,4 @@
 import MultiWallet from './../node_modules/multi-wallet/browser.js';
-import domtoimage from './../node_modules/dom-to-image/src/dom-to-image.js';
-import {saveAs} from './../node_modules/file-saver/FileSaver.js';
 
 const main = document.querySelector('main');
 
@@ -25,9 +23,6 @@ if (!location.hash || location.length === 1 || location.hash === '#qr') {
 const _generateQR = input => QRCode.toDataURL(input, {
   scale: 5,
   margin: 0,
-  // color: {
-    // dark: '#00ff00ff'
-  // },
   rendererOpts: {
     quality: 1
   }
@@ -36,6 +31,9 @@ const _generateQR = input => QRCode.toDataURL(input, {
 const create = async () => {
   const wallet = new MultiWallet('leofcoin:olivia');
   const mnemonic = wallet.generate();
+  if (!window.QRCode) {
+    await importScript('./lib/qrcode.js', 'module');
+  }
   const codes = [await _generateQR(wallet.account(0).external(0).address), await _generateQR(wallet.export())];
   document.querySelector('.public').innerHTML = wallet.address;
   document.querySelector('.public-qr').src = codes[0];
@@ -59,10 +57,16 @@ const downloadPaper = async () => {
   const generating = document.querySelector('.generating');
   generating.classList.remove('hidden');
   wallet.classList.remove('hidden');
+  if (!window.domtoimage) {
+    await importScript('./lib/dom-to-image.js');
+  }
   const blob = await domtoimage.toBlob(wallet, {bgcolor: '#1c2c3b'});
+  if (!window.saveAs) {
+    await importScript('./lib/FileSaver.js');
+  }
+  await saveAs(blob, 'leofcoin-wallet.png');
   wallet.classList.add('hidden');
   generating.classList.add('hidden');
-  await saveAs(blob, 'crypto-wallet.png');
   document.querySelector('.download').removeEventListener('click', downloadPaper);
   location.hash = 'home';
 }
