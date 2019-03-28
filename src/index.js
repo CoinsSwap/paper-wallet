@@ -1,6 +1,6 @@
-import wallet from 'crypto-io-wallet/wallet.browser';
-import domtoimage from 'dom-to-image';
-import {saveAs} from 'file-saver';
+import MultiWallet from './../node_modules/multi-wallet/browser.js';
+import domtoimage from './../node_modules/dom-to-image/src/dom-to-image.js';
+import {saveAs} from './../node_modules/file-saver/FileSaver.js';
 
 const main = document.querySelector('main');
 
@@ -19,7 +19,7 @@ window.addEventListener('hashchange', change => selectSection());
 if (!location.hash || location.length === 1 || location.hash === '#qr') {
   location.hash = 'home';
 } else {
-  selectSection(location.hash)
+  selectSection(location.hash);
 }
 
 const _generateQR = input => QRCode.toDataURL(input, {
@@ -33,22 +33,18 @@ const _generateQR = input => QRCode.toDataURL(input, {
   }
 });
 
-const create = () => {
-  const _wallet = new wallet.CryptoWallet({});
-  _wallet.new();
-  const codes = [_generateQR(_wallet.address), _generateQR(_wallet.wif)]
+const create = async () => {
+  const wallet = new MultiWallet('leofcoin:olivia');
+  const mnemonic = wallet.generate();
+  const codes = [await _generateQR(wallet.account(0).external(0).address), await _generateQR(wallet.export())];
+  document.querySelector('.public').innerHTML = wallet.address;
+  document.querySelector('.public-qr').src = codes[0];
+  // wallet import format;
+  document.querySelector('.private').innerHTML = wallet.wif;
+  document.querySelector('.private-qr').src = codes[1];
 
-  Promise.all(codes).then(result => {
-    // address
-    document.querySelector('.public').innerHTML = _wallet.address;
-    document.querySelector('.public-qr').src = result[0];
-    // wallet import format;
-    document.querySelector('.private').innerHTML = _wallet.wif;
-    document.querySelector('.private-qr').src = result[1];
-
-    location.hash = 'qr';
-    document.querySelector('.download').addEventListener('click', downloadPaper);
-  })
+  location.hash = 'qr';
+  document.querySelector('.download').addEventListener('click', downloadPaper);
 }
 
 /**

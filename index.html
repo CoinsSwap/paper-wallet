@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Paper Wallet</title>
+    <meta name="Description" content="Leofcoin Paper Wallet - generate paper wallet">
+    <title>Leofcoin Paper Wallet</title>
     <style>
       body, html {
         height: 100%;
@@ -135,6 +136,9 @@
         padding: 12px 16px;
         box-sizing: border-box;
       }
+      .private-container {
+        transform: rotateZ(180deg);
+      }
       .horizontal-line {
         width: 964px;
         height: 1px;
@@ -166,6 +170,21 @@
       .wallet .particles-js-canvas-el {
         position: absolute;
       }
+      .logo {
+        box-sizing: border-box;
+        padding: 24px;
+        border-radius: 50%;
+        background: #fff;
+        width: 140px;
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo img {
+        width: 86px;
+        height: 86px;
+      }
       @media (min-width: 964px) {
         .wallet {
           position: relative;
@@ -183,7 +202,7 @@
   <body>
     <main id="main">
       <section data-route="home">
-        <span class="appname">CRYPTOCOIN</span>
+        <span class="appname">LEOFCOIN</span>
         <span class="subtitle">Paper wallet generator</span>
         <span class="flex"></span>
         <button onclick="create()">create paper wallet</button>
@@ -230,7 +249,7 @@
             <span class="flex"></span>
 
             <span class="qr-container">
-              <strong style="padding-top: 46px;">DO NOT REVEAL THE PRIVATE KEY!</strong>
+              <strong style="padding-top: 36px;">DO NOT REVEAL THE PRIVATE KEY!</strong>
               <br>
 
               <span class="flex"></span>
@@ -245,8 +264,10 @@
             <span class="flex"></span>
 
             <span class="qr-container">
-              <h4 style="padding-top: 46px;">CRYPTOCOIN</h4>
-              <img src="lib/wallet_icon.png" alt="">
+              <h4 style="padding-top: 36px;padding-bottom: 36px;">LEOFCOIN</h4>
+              <span class="logo">
+                <img src="lib/wallet_icon.svg" alt="">
+              </span>
               <span class="flex"></span>
             </span>
           </span>
@@ -279,19 +300,14 @@
             },
             "polygon": {
               "nb_sides": 7
-            },
-            "image": {
-              "src": "img/github.svg",
-              "width": 100,
-              "height": 100
             }
           },
           "opacity": {
             "value": 0.7616207289111233,
             "random": false,
             "anim": {
-              "enable": false,
-              "speed": 1,
+              "enable": true,
+              "speed": 0.5,
               "opacity_min": 0.1,
               "sync": false
             }
@@ -381,22 +397,21 @@
 
       window.loadParticles = loadParticles;
 
-      requestAnimationFrame(() => {
-        (async () => {
-          const importScript = src => new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.onload = () => resolve();
-            script.onerror = error => reject(error);
-            script.setAttribute('async', '')
-            script.src = src;
-            document.head.appendChild(script)
-          });
-          await importScript('node_modules/particles.js/particles.js');
-          await loadParticles('main');
-          await importScript('lib/wallet.js');
-          await importScript('node_modules/qrcode/build/qrcode.js');
-        })();
+      const importScript = (src, type) => new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.onload = () => resolve();
+        script.onerror = error => reject(error);
+        if (type) script.setAttribute('type', type);
+        script.setAttribute('async', '');
+        script.src = src;
+        document.head.appendChild(script)
       });
+      (async () => {
+        await importScript('node_modules/particles.js/particles.js');
+        await loadParticles('main');
+        await importScript('lib/wallet.js', 'module');
+        await importScript('node_modules/qrcode/build/qrcode.js');
+      })();
     </script>
   </body>
 </html>

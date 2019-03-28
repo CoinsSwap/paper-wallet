@@ -1,5 +1,5 @@
-# crypto-paper-wallet
-> Cryptocoin Paper Wallet Generator
+# leofcoin-paper-wallet
+> Leofcoin Paper Wallet Generator
 
 ## BROWSER SUPPORT
 - [x] Google Chrome
@@ -9,26 +9,30 @@
 ****Firefox has a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1409992) wich prevent 
 the qrcode to work as expected, this will be fixed in FF 58.***
 ## Install
-Asuming you already have node and npm installed install Backed (builder) and live-server with
+Asuming you already have node and npm installed install live-server with
 ```sh
 # NPM
-npm install backed live-server --global
+npm install live-server --global
 
 # Yarn
-yarn global add backed live-server
+yarn global add live-server
 ```
 
 ## Development
 ### Build
 ```sh
-backed -b
+npm run compile
+```
+### watch 
+```sh
+npm run watch
 ```
 ### Serve
 ```sh
 npm run start
 ```
 ## ROADMAP
-- [x] Support Cryptocoin
+- [x] Support Leofcoin
 - [ ] Support Bitcoin
 - [ ] Support Litecoin
 - [ ] Support other currencies (currency will be added when requested)

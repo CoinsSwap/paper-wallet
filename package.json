@@ -6,41 +6,21 @@
   "author": "Glenn Vandeuren <vandeurenglenn@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "live-server"
-  },
-  "backed": {
-    "bundles": [
-      {
-        "src": "src/index.js",
-        "dest": "lib/wallet.js",
-        "moduleName": "CryptoWallet",
-        "format": "iife",
-        "plugins": {
-          "json": {},
-          "node-builtins": {},
-          "node-resolve": {
-            "jsnext": true,
-            "browser": true,
-            "main": true
-          },
-          "commonjs": {
-            "include": "node_modules/**"
-          }
-        }
-      }
-    ]
+    "start": "live-server",
+    "compile": "rollup -c",
+    "watch": "rollup -c -w"
   },
   "dependencies": {
-    "crypto-io-wallet": "^0.1.1",
     "dom-to-image": "^2.6.0",
     "file-saver": "^1.3.3",
+    "multi-wallet": "^1.2.1",
     "particles.js": "^2.0.0",
     "qrcode": "^1.2.0"
   },
   "devDependencies": {
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-json": "^2.3.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-resolve": "^3.0.2"
+    "rollup": "^1.7.4",
+    "rollup-plugin-cleanup": "^3.1.1",
+    "rollup-plugin-commonjs": "^9.2.2",
+    "rollup-plugin-terser": "^4.0.4"
   }
 }
